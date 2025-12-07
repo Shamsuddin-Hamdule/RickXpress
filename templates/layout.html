@@ -82,7 +82,33 @@
 
     <!-- FOOTER -->
     <footer class="bg-dark text-center text-white py-3 mt-5">
-        <p class="mb-0">© 2025 RickXpress — SE Software & Web Developers</p>
+        <div class="bg-warning text-dark ">
+        {% with messages = get_flashed_messages(with_categories=true) %} {% if messages %}
+            <div class="mt-2">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <script>
+                (function(){
+                    document.addEventListener('DOMContentLoaded', function(){
+                        const alerts = document.querySelectorAll('.alert[role="alert"]');
+                        alerts.forEach(function(el){
+                            setTimeout(function(){
+                                const bsAlert = bootstrap.Alert.getOrCreateInstance(el);
+                                try { bsAlert.close(); } catch(e){ /* ignore */ }
+                            }, 3000);
+                        });
+                    });
+                })();
+            </script>
+        {% endif %} {% endwith %}
+        </div>
+        <p class="mb-0">© 2025 RickXpress</p>
     </footer>
 
     <!-- BOOTSTRAP JS -->
