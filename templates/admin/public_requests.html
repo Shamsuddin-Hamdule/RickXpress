@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block title %}Public Ride Requests — Admin{% endblock %}
+
+{% block content %}
+<h3 class="fw-bold mb-4">Public Ride Requests</h3>
+
+{% if requests|length == 0 %}
+<div class="alert alert-info">No public ride requests.</div>
+{% else %}
+
+<div class="row">
+    {% for r in requests %}
+    <div class="col-md-4 mb-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+
+                <h5 class="card-title">Request #{{ r.id }}</h5>
+
+                <p><b>Customer:</b> {{ r.customer.full_name }}</p>
+                <p><b>Phone:</b> {{ r.customer.phone }}</p>
+
+                <p><b>From:</b> {{ r.from_location }}</p>
+                <p><b>To:</b> {{ r.to_location }}</p>
+
+                <p><b>Fare Offered:</b> ₹{{ r.offer_fare }}</p>
+                <p><b>Date:</b> {{ r.date }}</p>
+
+                {% if r.accepted_by %}
+                    <p><b>Accepted By:</b> {{ r.rider.full_name }}</p>
+                    <p><b>Rider Phone:</b> {{ r.rider.phone }}</p>
+                    <span class="badge bg-success">Accepted</span>
+                {% else %}
+                    <span class="badge bg-warning text-dark">Pending</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endif %}
+{% endblock %}

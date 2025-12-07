@@ -1,0 +1,184 @@
+<div class="container">
+
+    <h3 class="fw-bold mb-4">Admin Dashboard</h3>
+
+    <!-- STAT CARDS -->
+    <div class="row">
+
+        <!-- Total Users -->
+        <div class="col-md-3 col-6 mb-3">
+            <div class="card shadow-sm text-center p-3">
+                <h2 class="fw-bold">{{ admin_stats.total_users }}</h2>
+                <p class="mb-0 text-muted">Users</p>
+            </div>
+        </div>
+
+        <!-- Riders -->
+        <div class="col-md-3 col-6 mb-3">
+            <div class="card shadow-sm text-center p-3">
+                <h2 class="fw-bold">{{ admin_stats.total_riders }}</h2>
+                <p class="mb-0 text-muted">Riders</p>
+            </div>
+        </div>
+
+        <!-- Vehicles -->
+        <div class="col-md-3 col-6 mb-3">
+            <div class="card shadow-sm text-center p-3">
+                <h2 class="fw-bold">{{ admin_stats.total_vehicles }}</h2>
+                <p class="mb-0 text-muted">Vehicles</p>
+            </div>
+        </div>
+
+        <!-- Total Bookings -->
+        <div class="col-md-3 col-6 mb-3">
+            <div class="card shadow-sm text-center p-3">
+                <h2 class="fw-bold">{{ admin_stats.total_bookings }}</h2>
+                <p class="mb-0 text-muted">Bookings</p>
+            </div>
+        </div>
+
+        <!-- Pending -->
+        <div class="col-md-3 col-6 mb-3">
+            <div class="card shadow-sm text-center p-3 bg-warning text-dark">
+                <h2 class="fw-bold">{{ admin_stats.pending_bookings }}</h2>
+                <p class="mb-0">Pending</p>
+            </div>
+        </div>
+
+        <!-- Completed -->
+        <div class="col-md-3 col-6 mb-3">
+            <div class="card shadow-sm text-center p-3 bg-success text-white">
+                <h2 class="fw-bold">{{ admin_stats.completed_bookings }}</h2>
+                <p class="mb-0">Completed</p>
+            </div>
+        </div>
+
+        <!-- Today's Bookings -->
+        <div class="col-md-3 col-6 mb-3">
+            <div class="card shadow-sm text-center p-3 bg-info text-dark">
+                <h2 class="fw-bold">{{ admin_stats.today_bookings }}</h2>
+                <p class="mb-0">Today</p>
+            </div>
+        </div>
+
+        <!-- Public Ride Requests (if enabled) -->
+        <div class="col-md-3 col-6 mb-3">
+            <div class="card shadow-sm text-center p-3 bg-dark text-white">
+                <h2 class="fw-bold">{{ admin_stats.public_requests }}</h2>
+                <p class="mb-0">Ride Requests</p>
+            </div>
+        </div>
+
+    </div>
+
+    <hr class="my-4">
+
+    <h4 class="fw-bold">Admin Tools</h4>
+
+    <!-- Quick Access Buttons -->
+    <div class="d-grid gap-2 mt-3 d-md-flex">
+
+        <a class="btn btn-outline-primary" href="/admin/users">
+            Manage Users
+        </a>
+
+        <a class="btn btn-outline-secondary" href="/admin/vehicles">
+            Manage Vehicles
+        </a>
+
+        <a class="btn btn-outline-success" href="/admin/bookings">
+            Manage Bookings
+        </a>
+
+        <a class="btn btn-outline-warning" href="/admin/public_requests">
+            Manage Ride Requests
+        </a>
+
+    </div>
+
+</div>
+<h4 class="mt-4">Pending Rider Requests</h4>
+
+{% if rider_requests|length == 0 %}
+    <p class="text-muted">No pending requests.</p>
+{% else %}
+
+<table class="table table-hover mb-4">
+    <thead class="table-dark">
+        <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for u in rider_requests %}
+        <tr>
+            <td>{{ u.full_name }}</td>
+            <td>{{ u.phone }}</td>
+            <td>{{ u.email }}</td>
+            <td>
+                <a href="{{ url_for('approve_rider', user_id=u.id) }}" class="btn btn-success btn-sm">Approve</a>
+                <a href="{{ url_for('reject_rider', user_id=u.id) }}" class="btn btn-danger btn-sm">Reject</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endif %}
+
+    <hr class="my-4">
+<div class="col-12">
+
+    <h3 class="fw-bold mb-4">Admin Panel</h3>
+
+    <div class="row">
+
+        <!-- USERS -->
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">User Management</h5>
+                    <p class="text-muted small">View all users and their roles.</p>
+                    <a href="{{ url_for('admin_users') }}" class="btn btn-dark w-100">Open</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- VEHICLES -->
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Vehicle Management</h5>
+                    <p class="text-muted small">View all registered vehicles.</p>
+                    <a href="{{ url_for('admin_vehicles') }}" class="btn btn-dark w-100">Open</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOOKINGS -->
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Booking Records</h5>
+                    <p class="text-muted small">Track all ride bookings.</p>
+                    <a href="{{ url_for('admin_bookings') }}" class="btn btn-dark w-100">Open</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- PUBLIC REQUESTS -->
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Public Ride Requests</h5>
+                    <p class="text-muted small">View all public ride requests.</p>
+                    <a href="{{ url_for('admin_public_requests') }}" class="btn btn-dark w-100">Open</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

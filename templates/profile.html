@@ -1,0 +1,89 @@
+{% extends "layout.html" %} {% block title %}My Profile{% endblock %} {% block
+content %}
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="text-center mb-4">
+      {% if current_user.role == 'customer' %} {% if not
+      current_user.is_rider_requested %}
+      <form action="{{ url_for('request_rider') }}" method="POST" class="mt-3">
+        <button class="btn btn-warning fw-bold">Request Rider Access</button>
+      </form>
+      {% else %}
+      <div class="alert alert-info mt-3">
+        Your rider request is pending admin approval.
+      </div>
+      {% endif %} {% endif %}
+        </div>
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h3 class="mb-4 text-center">My Profile</h3>
+
+          <form method="POST">
+            <!-- Full Name -->
+            <div class="mb-3">
+              <label class="form-label">Full Name</label>
+              <input
+                type="text"
+                name="name"
+                class="form-control"
+                value="{{ current_user.full_name }}"
+                required
+              />
+            </div>
+
+            <!-- Username -->
+            <div class="mb-3">
+              <label class="form-label">Username (optional)</label>
+              <input
+                type="text"
+                name="username"
+                class="form-control"
+                value="{{ current_user.username }}"
+              />
+            </div>
+
+            <!-- Phone -->
+            <div class="mb-3">
+              <label class="form-label">Phone Number</label>
+              <input
+                type="text"
+                name="phone"
+                class="form-control"
+                value="{{ current_user.phone }}"
+                required
+              />
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+              <label class="form-label">Email (optional)</label>
+              <input
+                type="email"
+                name="email"
+                class="form-control"
+                value="{{ current_user.email }}"
+              />
+            </div>
+
+            <!-- Rider status -->
+            <div class="mb-3">
+              <label class="form-label">Rider Status</label>
+              <input
+                type="text"
+                class="form-control"
+                value="{{ 'Yes (Rider)' if current_user.is_rider else 'No (Customer Only)' }}"
+                disabled
+              />
+            </div>
+
+            <button class="btn btn-primary w-100" type="submit">
+              Save Changes
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

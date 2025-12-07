@@ -1,0 +1,129 @@
+{% extends "layout.html" %} {% block title %}Add Vehicle — RickXpress{% endblock %}
+{% block content %}
+
+<h2 class="fw-bold mb-4">Add New Vehicle</h2>
+
+<div class="card shadow-sm border-0">
+  <div class="card-body">
+    <form method="POST" action="{{ url_for('vehicle_add') }}">
+      <div class="row">
+        <!-- Vehicle Type -->
+        <div class="col-md-6 mb-3">
+          <label class="form-label fw-bold">Vehicle Type</label>
+          <select
+            name="vehicle_type"
+            class="form-select"
+            id="vehicleType"
+            required
+          >
+            <option value="">Select Type</option>
+            <option value="Auto">Auto Rickshaw</option>
+            <option value="Cab">Cab / Car</option>
+            <option value="Bike">Bike</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <!-- Other Vehicle Type (only if type = Other) -->
+        <div class="col-md-6 mb-3" id="otherTypeBox" style="display: none">
+          <label class="form-label fw-bold">Specify Vehicle Type</label>
+          <input
+            type="text"
+            name="other_vehicle_type"
+            class="form-control"
+            placeholder="e.g., Tractor, Pickup, Van"
+          />
+        </div>
+
+        <!-- Vehicle Number -->
+        <div class="col-md-6 mb-3">
+          <label class="form-label fw-bold">Vehicle Number</label>
+          <input
+            type="text"
+            name="vehicle_number"
+            class="form-control"
+            placeholder="MH-08-AB-1234"
+            required
+          />
+        </div>
+
+        <!-- Driver Location -->
+        <div class="col-md-6 mb-3">
+          <label class="form-label fw-bold">Driver Location</label>
+          <input
+            type="text"
+            name="driver_location"
+            class="form-control"
+            placeholder="e.g. Ratnagiri, Chiplun, Dapoli"
+            required
+          />
+        </div>
+
+        <!-- Vehicle Model -->
+        <div class="col-md-6 mb-3">
+          <label class="form-label fw-bold">Vehicle Model</label>
+          <input
+            type="text"
+            name="model"
+            class="form-control"
+            placeholder="e.g. WagonR, Splendor, Activa"
+          />
+        </div>
+
+        <!-- Vehicle Color -->
+        <div class="col-md-6 mb-3">
+          <label class="form-label fw-bold">Color</label>
+          <input
+            type="text"
+            name="color"
+            class="form-control"
+            placeholder="e.g. White, Black, Yellow"
+          />
+        </div>
+
+        <!-- Owner (Admins only) -->
+        {% if current_user.role == 'admin' %}
+        <div class="col-md-6 mb-3">
+          <label class="form-label fw-bold">Owner</label>
+          <select name="owner_id" class="form-select" required>
+            <option value="">Select Owner</option>
+
+            {% for u in owners %}
+            <option value="{{ u.id }}">{{ u.name }} — +91 {{ u.phone }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        {% endif %}
+
+        <!-- Status -->
+        <div class="col-md-6 mb-3">
+          <label class="form-label fw-bold">Status</label>
+          <select name="status" class="form-select" required>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="text-end mt-3">
+        <button class="btn btn-warning fw-bold px-4">Add Vehicle</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Show/Hide "Other vehicle type" -->
+<script>
+  document
+    .getElementById("vehicleType")
+    .addEventListener("change", function () {
+      let box = document.getElementById("otherTypeBox");
+      if (this.value === "Other") {
+        box.style.display = "block";
+      } else {
+        box.style.display = "none";
+      }
+    });
+</script>
+
+{% endblock %}

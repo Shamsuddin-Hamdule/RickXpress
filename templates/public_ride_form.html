@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% block title %}Post Public Ride Request — RickXpress{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h3>Post a Ride Request</h3>
+
+    <form method="POST">
+        <div class="mb-3">
+            <label>From</label>
+            <input type="text" name="from_location" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label>To</label>
+            <input type="text" name="to_location" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label>Your Expected Fare (₹)</label>
+            <input type="number" name="fare" class="form-control" required>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label>Date</label>
+                <input type="date" name="date" class="form-control" required>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label>Time</label>
+                <input type="time" name="time" class="form-control" required>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label>Vehicle Type</label>
+            <select name="vehicle_type" class="form-control">
+                <option value="Auto Rickshaw">Auto Rickshaw</option>
+                <option value="Cab">Cab</option>
+                <option value="Bike">Bike</option>
+                <option value="Any">Any</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label>Seats Needed</label>
+            <input type="number" name="seats" class="form-control" min="1" max="20">
+        </div>
+
+        <button class="btn btn-success w-100">Submit Request</button>
+    </form>
+</div>
+{% endblock %}

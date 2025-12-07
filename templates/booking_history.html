@@ -1,0 +1,96 @@
+{% extends "layout.html" %}
+{% block title %}My Ride History — RickXpress{% endblock %}
+
+{% block content %}
+
+<h2 class="fw-bold mb-4">My Bookings</h2>
+
+{% if bookings|length == 0 %}
+    <div class="alert alert-info">No bookings yet.</div>
+{% else %}
+
+    {% for b in bookings %}
+    <div class="card shadow-sm mb-3">
+        <div class="card-body">
+
+            <div class="d-flex justify-content-between">
+                <h5 class="fw-bold">Booking #{{ b.id }}</h5>
+                <span>
+                    {% if b.status == "Completed" %}
+                        <span class="badge bg-success">Completed</span>
+                    {% elif b.status == "Cancelled" %}
+                        <span class="badge bg-danger">Cancelled</span>
+                    {% elif b.status == "OnGoing" %}
+                        <span class="badge bg-primary">On Going</span>
+                    {% elif b.status == "Accepted" %}
+                        <span class="badge bg-primary">Accepted</span>
+                    {% else %}
+                        <span class="badge bg-warning text-dark">Pending</span>
+                    {% endif %}
+                </span>
+            </div>
+
+            <p class="mb-1"><strong>Vehicle:</strong> {{ b.vehicle.vehicle_type }} ({{ b.vehicle.vehicle_number }})</p>
+            <p class="mb-1"><strong>Driver Phone:</strong> {{ b.driver.phone }}</p>
+
+            <p class="mb-1"><strong>Pickup:</strong> {{ b.pickup }}</p>
+            <p class="mb-1"><strong>Drop:</strong> {{ b.drop }}</p>
+
+            <p class="text-muted mb-0">
+                <strong>Date:</strong> {{ b.created_at.strftime("%d %b %Y") }}
+            </p>
+        </div>
+    </div>
+    {% endfor %}
+
+{% endif %}
+
+<hr class="my-4">
+
+<h4 class="fw-bold mb-3">Ride Requests</h4>
+
+{% if public_requests|length == 0 %}
+    <div class="alert alert-info">No public ride requests yet.</div>
+{% else %}
+
+    {% for p in public_requests %}
+    <div class="card shadow-sm mb-3">
+        <div class="card-body">
+
+            <div class="d-flex justify-content-between">
+                <h5 class="fw-bold">Request #{{ p.id }}</h5>
+                <span>
+                    {% if p.status == "Accepted" %}
+                        <span class="badge bg-success">Accepted</span>
+                    {% elif p.status == "Rejected" %}
+                        <span class="badge bg-danger">Rejected</span>
+                    {% else %}
+                        <span class="badge bg-warning text-dark">Pending</span>
+                    {% endif %}
+                </span>
+            </div>
+
+            <p class="mb-1"><strong>From:</strong> {{ p.from_location }}</p>
+            <p class="mb-1"><strong>To:</strong> {{ p.to_location }}</p>
+
+            <p class="mb-1"><strong>Seats:</strong> {{ p.seats }}</p>
+            <p class="mb-1"><strong>Vehicle:</strong> {{ p.vehicle_type }}</p>
+
+            <p class="mb-1">
+                <strong>Rider Phone:</strong>
+                {{ p.rider.phone if p.rider else "Not accepted yet" }}
+            </p>
+
+            <p class="mb-1"><strong>Fare Offered:</strong> ₹{{ p.offer_fare }}</p>
+
+            <p class="text-muted mb-0">
+                <strong>Date:</strong> {{ p.created_at.strftime("%d %b %Y") }}
+            </p>
+
+        </div>
+    </div>
+    {% endfor %}
+
+{% endif %}
+
+{% endblock %}

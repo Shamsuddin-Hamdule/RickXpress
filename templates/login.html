@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+
+            <div class="card shadow-sm">
+                <div class="card-body">
+
+                    <h3 class="text-center mb-4">Welcome Back</h3>
+
+                    <form method="POST">
+
+                        <!-- Universal login field -->
+                        <div class="mb-3">
+                            <label class="form-label">
+                                Phone / Email / Username / Full Name
+                            </label>
+                            <input type="text" name="identifier" class="form-control" required>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" name="password" class="form-control" required>
+                        </div>
+
+                        <button class="btn btn-primary w-100" type="submit">
+                            Login
+                        </button>
+
+                    </form>
+
+                    <p class="text-center mt-3">
+                        Don't have an account yet?
+                        <a href="{{ url_for('register') }}">Create one</a>
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

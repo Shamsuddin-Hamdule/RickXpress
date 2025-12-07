@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% block title %}Accepted Rides{% endblock %}
+{% block content %}
+
+<div class="container mt-4">
+    <h3 class="mb-3">My Accepted Rides</h3>
+
+    {% if rides|length == 0 %}
+        <div class="alert alert-info">You have not accepted any rides yet.</div>
+    {% else %}
+        {% for r in rides %}
+        <table class="table table-bordered table-striped mb-4">
+
+            <!-- First row block -->
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Customer Name</th>
+                    <th>Phone No</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                    <td>{{ r.id }}</td>
+                    <td>{{ r.customer.full_name }}</td>
+                    <td>{{ r.customer.phone }}</td>
+                    <td><span class="badge bg-success">Accepted</span></td>
+                </tr>
+
+                <tr>
+                    <th>From</th>
+                    <td>{{ r.from_location }}</td>
+                    <th>To</th>
+                    <td>{{ r.to_location }}</td>
+                </tr>
+
+                <tr>
+                    <th>Fare</th>
+                    <td>₹{{ r.offer_fare }}</td>
+                    <th>Date / Time</th>
+                    <td>{{ r.date }} {{ r.time }}</td>
+                </tr>
+            </tbody>
+
+        </table>
+        {% endfor %}
+    {% endif %}
+</div>
+
+{% endblock %}

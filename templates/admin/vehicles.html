@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% block title %}Vehicles — Admin{% endblock %}
+{% block content %}
+
+<h3 class="fw-bold mb-4">All Vehicles</h3>
+
+<div class="row">
+    {% for v in vehicles %}
+    <div class="col-md-4 col-12 mb-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+
+                <h5 class="card-title">
+                    {{ v.vehicle_number }}
+                </h5>
+
+                <span class="badge bg-primary">{{ v.display_type() }}</span>
+                <span class="badge bg-dark">Owner: {{ v.owner.full_name }} ({{ v.owner.phone }})</span>
+
+                <p class="mt-3 mb-1"><b>Model:</b> {{ v.model }}</p>
+                <p class="mb-1"><b>Color:</b> {{ v.color }}</p>
+                <p class="mb-1"><b>Location:</b> {{ v.driver_location }}</p>
+
+                <p class="mb-3">
+                    <b>Status:</b>
+                    <span class="badge 
+                        {% if v.status=='Active' %} bg-success 
+                        {% else %} bg-danger {% endif %}">
+                        {{ v.status }}
+                    </span>
+                </p>
+
+                <a href="{{ url_for('vehicle_edit', vehicle_id=v.id) }}"
+                   class="btn btn-warning btn-sm w-100 mb-2">Edit</a>
+
+                <a href="{{ url_for('delete_vehicle', id=v.id) }}"
+                   class="btn btn-danger btn-sm w-100"
+                   onclick="return confirm('Delete this vehicle?')">
+                    Delete
+                </a>
+
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block title %}Public Ride Requests — RickXpress{% endblock %}
+{% block content %}
+
+<div class="container mt-4">
+    <h3>Available Ride Requests</h3>
+{% if requests|length == 0 %}
+    <div class="alert alert-info">No public ride requests yet.</div>
+{% else %}
+    {% for r in requests %}
+    <div class="card mb-3 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">{{ r.from_location }} → {{ r.to_location }}</h5>
+
+            <p><strong>Fare Offered:</strong> ₹{{ r.offer_fare }}</p>
+            <p><strong>Date:</strong> {{ r.date }} | <strong>Time:</strong> {{ r.time }}</p>
+            <p><strong>Vehicle Type:</strong> {{ r.vehicle_type }}</p>
+            <p><strong>Seats:</strong> {{ r.seats }}</p>
+
+            <a href="{{ url_for('accept_public_ride', req_id=r.id) }}" 
+               class="btn btn-primary">Accept Ride</a>
+        </div>
+    </div>
+    {% endfor %}
+{% endif %}
+</div>
+
+{% endblock %}

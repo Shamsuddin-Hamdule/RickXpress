@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block title %}Completed Rides{% endblock %}
+{% block content %}
+
+<div class="container mt-4">
+    <h3 class="mb-3">Completed Rides</h3>
+
+    {% if rides|length == 0 %}
+        <div class="alert alert-info">No completed rides yet.</div>
+    {% else %}
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Customer</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Fare</th>
+                <th>Date / Time</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for r in rides %}
+            <tr>
+                <td>{{ r.id }}</td>
+                <td>{{ r.customer_name }}</td>
+                <td>{{ r.from_location }}</td>
+                <td>{{ r.to_location }}</td>
+                <td>₹{{ r.fare }}</td>
+                <td>{{ r.date }} {{ r.time }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</div>
+
+{% endblock %}

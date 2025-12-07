@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block title %}Confirm Booking — RickXpress{% endblock %}
+
+{% block content %}
+
+<h2 class="fw-bold mb-4">Ride Confirmation</h2>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+
+        <h5 class="fw-bold mb-3">Ride Details</h5>
+
+        <p><strong>Vehicle:</strong> {{ vehicle.vehicle_type }} - {{ vehicle.model }} ({{ vehicle.vehicle_number }})</p>
+        <p><strong>Pickup:</strong> {{ pickup }}</p>
+        <p><strong>Drop:</strong> {{ drop }}</p>
+        <p><strong>Estimated Distance:</strong> {{ distance_km }} km</p>
+        <p><strong>Estimated Fare:</strong> ₹{{ fare }}</p>
+
+        <form method="POST" action="{{ url_for('confirm_booking') }}">
+            <input type="hidden" name="vehicle_id" value="{{ vehicle.id }}">
+            <input type="hidden" name="pickup" value="{{ pickup }}">
+            <input type="hidden" name="drop" value="{{ drop }}">
+            <input type="hidden" name="fare" value="{{ fare }}">
+            <input type="hidden" name="distance_km" value="{{ distance_km }}">
+
+            <div class="text-end">
+                <button class="btn btn-dark fw-bold">Confirm Booking</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

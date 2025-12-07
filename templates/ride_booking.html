@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% block title %}Book a Ride — RickXpress{% endblock %}
+
+{% block content %}
+
+<h2 class="fw-bold mb-4">Book a Ride</h2>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+
+        <form method="POST" action="{{ url_for('book_ride') }}">
+
+            <!-- Select Vehicle -->
+            <div class="mb-3">
+                <label class="form-label fw-bold">Select Vehicle</label>
+                <select name="vehicle_id" class="form-select" required>
+                    <option value="">Choose Vehicle</option>
+
+                    {% for v in vehicles %}
+                        <option value="{{ v.id }}">
+                            {{ v.vehicle_type }} - {{ v.model or '' }} 
+                            ({{ v.vehicle_number }})
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Pickup -->
+            <div class="mb-3">
+                <label class="form-label fw-bold">Pickup Location</label>
+                <input type="text" name="pickup" class="form-control"
+                       placeholder="Enter pickup location" required>
+            </div>
+
+            <!-- Drop -->
+            <div class="mb-3">
+                <label class="form-label fw-bold">Drop Location</label>
+                <input type="text" name="drop" class="form-control"
+                       placeholder="Enter drop location" required>
+            </div>
+
+            <hr>
+
+            <div class="text-end">
+                <button class="btn btn-warning fw-bold px-4">Continue</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+{% endblock %}

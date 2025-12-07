@@ -1,0 +1,121 @@
+{% extends "layout.html" %}
+{% block title %}Edit Vehicle — RickXpress{% endblock %}
+
+{% block content %}
+
+<h2 class="fw-bold mb-4">Edit Vehicle</h2>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+
+        <form method="POST" action="{{ url_for('vehicle_edit', vehicle_id=vehicle.id) }}">
+
+            <div class="row">
+
+                <!-- Vehicle Type -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Vehicle Type</label>
+                    <select name="vehicle_type" id="vehicleType" class="form-select" required>
+                        <option value="Auto"  {% if vehicle.vehicle_type=='Auto' %}selected{% endif %}>Auto Rickshaw</option>
+                        <option value="Cab"   {% if vehicle.vehicle_type=='Cab' %}selected{% endif %}>Cab / Car</option>
+                        <option value="Bike"  {% if vehicle.vehicle_type=='Bike' %}selected{% endif %}>Bike</option>
+                        <option value="Other" {% if vehicle.vehicle_type=='Other' %}selected{% endif %}>Other</option>
+                    </select>
+                </div>
+
+                <!-- OTHER Vehicle Type -->
+                <div class="col-md-6 mb-3" id="otherTypeBox" 
+                     style="{% if vehicle.vehicle_type=='Other' %}display:block;{% else %}display:none;{% endif %}">
+                    <label class="form-label fw-bold">Specify Vehicle Type</label>
+                    <input type="text" 
+                           name="other_vehicle_type" 
+                           class="form-control"
+                           value="{{ vehicle.other_vehicle_type or '' }}"
+                           placeholder="e.g., Tractor, Van">
+                </div>
+
+                <!-- Vehicle Number -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Vehicle Number</label>
+                    <input type="text" 
+                           name="vehicle_number" 
+                           class="form-control"
+                           value="{{ vehicle.vehicle_number }}"
+                           required>
+                </div>
+
+                <!-- Model -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Vehicle Model</label>
+                    <input type="text" 
+                           name="model" 
+                           class="form-control"
+                           value="{{ vehicle.model or '' }}">
+                </div>
+
+                <!-- Driver Location -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Driver Location</label>
+                    <input type="text"
+                        name="driver_location"
+                        class="form-control"
+                        value="{{ vehicle.driver_location or '' }}"
+                        placeholder="e.g. Ratnagiri, Chiplun">
+                </div>
+
+                <!-- Color -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Color</label>
+                    <input type="text"
+                           name="color"
+                           class="form-control"
+                           value="{{ vehicle.color or '' }}">
+                </div>
+
+                <!-- Owner (Admin Only) -->
+                {% if current_user.role == 'admin' %}
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Owner</label>
+                    <select name="owner_id" class="form-select">
+                        {% for u in owners %}
+                        <option value="{{ u.id }}" {% if vehicle.owner_id == u.id %}selected{% endif %}>
+                            {{ u.name }} — +91 {{ u.phone }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% endif %}
+
+                <!-- Status -->
+                <div class="col-md-6 mb-3">
+                    <label class="form-label fw-bold">Status</label>
+                    <select name="status" class="form-select">
+                        <option value="Active"   {% if vehicle.status=='Active' %}selected{% endif %}>Active</option>
+                        <option value="Inactive" {% if vehicle.status=='Inactive' %}selected{% endif %}>Inactive</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="text-end mt-3">
+                <button class="btn btn-warning fw-bold px-4">Update Vehicle</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+<!-- JS: Show/Hide Other Type -->
+<script>
+document.getElementById("vehicleType").addEventListener("change", function () {
+    let otherBox = document.getElementById("otherTypeBox");
+    if (this.value === "Other") {
+        otherBox.style.display = "block";
+    } else {
+        otherBox.style.display = "none";
+    }
+});
+</script>
+
+{% endblock %}

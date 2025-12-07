@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block title %}Bookings — Admin{% endblock %}
+{% block content %}
+
+<h3 class="fw-bold mb-4">All Bookings</h3>
+
+<div class="row">
+    {% for b in bookings %}
+    <div class="col-md-4 col-12 mb-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+
+                <h5 class="card-title">Booking #{{ b.id }}</h5>
+
+                <p><b>Customer:</b> {{ b.customer.full_name }} ({{ b.customer.phone }})</p>
+                <p><b>Rider:</b> {{ b.driver.full_name }} ({{ b.driver.phone }})</p>
+                <p><b>Vehicle:</b> {{ b.vehicle.vehicle_type }} — {{ b.vehicle.vehicle_number }}</p>
+
+                <p><b>Pickup:</b> {{ b.pickup }}</p>
+                <p><b>Drop:</b> {{ b.drop }}</p>
+
+                <p><b>Fare:</b> to be decided mutually</p>
+
+                <p>
+                    <b>Status:</b>
+                    <span class="badge bg-{% if b.status=='Completed' %}success{% elif b.status=='Cancelled' %}danger{% else %}warning text-dark{% endif %}">
+                        {{ b.status }}
+                    </span>
+                </p>
+
+                <p class="text-muted small">
+                    {{ b.created_at.strftime("%d %b %Y, %I:%M %p") }}
+                </p>
+
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

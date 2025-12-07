@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block title %}Booking Status — RickXpress{% endblock %}
+
+{% block content %}
+
+<h2 class="fw-bold mb-4">Booking #{{ booking.id }}</h2>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        <p><strong>Vehicle:</strong> {{ booking.vehicle.display_type() }} — {{ booking.vehicle.vehicle_number }}</p>
+        <p><strong>Pickup:</strong> {{ booking.pickup }}</p>
+        <p><strong>Drop:</strong> {{ booking.drop }}</p>
+
+        <p class="mt-3"><strong>Status:</strong> <span class="badge bg-warning text-dark">{{ booking.status }}</span></p>
+
+        <hr>
+
+        <h5>Contact Details</h5>
+        <p><strong>Driver:</strong> {{ driver.full_name }} — {{ driver.phone }}</p>
+        <p><strong>Your number:</strong>{{ customer.phone }}</p>
+
+        <p class="text-muted small">Driver will be notified (feature to be implemented).</p>
+
+        <div class="mt-3">
+            <a href="{{ url_for('dashboard') }}" class="btn btn-dark">Go to Dashboard</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

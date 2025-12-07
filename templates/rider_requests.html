@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="container mt-4">
+    <h3 class="mb-4">Ride Requests</h3>
+
+    {% if bookings|length == 0 %}
+        <div class="alert alert-info">No ride requests yet.</div>
+    {% else %}
+
+        {% for b in bookings %}
+        <div class="card shadow-sm mb-3">
+            <div class="card-body">
+
+                <h5 class="card-title">
+                    Booking #{{ b.id }}
+                    <span class="badge 
+                        {% if b.status == 'Pending' %} bg-warning text-dark
+                        {% elif b.status == 'Accepted' %} bg-success
+                        {% elif b.status == 'Rejected' %} bg-danger
+                        {% endif %}">
+                        {{ b.status }}
+                    </span>
+                </h5>
+
+                <p><strong>Customer Name:</strong> {{ b.customer.full_name }}</p>
+                <p><strong>Customer Phone:</strong> {{ b.customer.phone }}</p>
+
+                <p><strong>From:</strong> {{ b.pickup }}</p>
+                <p><strong>To:</strong> {{ b.drop }}</p>
+
+                <p><strong>Vehicle:</strong> 
+                    {{ b.vehicle.vehicle_number }} 
+                    ({{ b.vehicle.display_type() }})
+                </p>
+
+                <p><strong>Fare:</strong> 
+                    <span class="text-primary">To be agreed upon on call</span>
+                </p>
+
+                {% if b.status == "Pending" %}
+                <a href="{{ url_for('rider_accept_booking', booking_id=b.id) }}"
+                   class="btn btn-success btn-sm">Accept</a>
+                <a href="{{ url_for('rider_reject_booking', booking_id=b.id) }}"
+                   class="btn btn-danger btn-sm">Reject</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+
+    {% endif %}
+</div>
+
+{% endblock %}

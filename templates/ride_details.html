@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+{% block title %}Vehicle Details — RickXpress{% endblock %}
+
+{% block content %}
+
+<h2 class="fw-bold mb-4">Vehicle & Driver Details</h2>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+
+        <div class="row">
+            <div class="col-md-4 text-center mb-3">
+                <div class="rounded-circle bg-warning text-dark d-flex justify-content-center align-items-center mx-auto"
+                     style="width:120px; height:120px; font-size:48px; font-weight:900;">
+                    {{ owner.full_name[0] if owner and owner.full_name else 'D' }}
+                </div>
+                <p class="mt-3 mb-0 fw-bold fs-5">{{ owner.full_name }}</p>
+                <p class="text-muted mb-0">{{ owner.phone }}</p>
+            </div>
+
+            <div class="col-md-8">
+                <h4 class="fw-bold">Vehicle Information</h4>
+
+                <ul class="list-group mb-3">
+                    <li class="list-group-item"><strong>Type:</strong> {{ vehicle.display_type() }}</li>
+                    <li class="list-group-item"><strong>Number:</strong> {{ vehicle.vehicle_number }}</li>
+                    <li class="list-group-item"><strong>Model:</strong> {{ vehicle.model or '-' }}</li>
+                    <li class="list-group-item"><strong>Color:</strong> {{ vehicle.color or '-' }}</li>
+                    <li class="list-group-item"><strong>Base Location:</strong> {{ vehicle.driver_location or '-' }}</li>
+                </ul>
+
+                <!-- Booking form: simple -->
+                <form method="POST" action="{{ url_for('book_vehicle') }}">
+                    <input type="hidden" name="vehicle_id" value="{{ vehicle.id }}">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Pickup</label>
+                        <input type="text" name="pickup" class="form-control" required placeholder="Enter pickup location">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Drop</label>
+                        <input type="text" name="drop" class="form-control" required placeholder="Enter drop location">
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-warning fw-bold">Book Ride</button>
+                        <a href="{{ url_for('rides') }}" class="btn btn-outline-dark">Back to list</a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

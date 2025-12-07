@@ -1,0 +1,73 @@
+{% extends "layout.html" %} {% block title %}Dashboard — RickXpress{% endblock %} {%
+block content %}
+
+<h2 class="fw-bold mb-4">Welcome, {{ current_user.full_name }}!</h2>
+
+<!-- Determine default mode if not set -->
+{% if not session.get('dashboard_mode') %} {% if current_user.role == 'customer'
+%} {% set _ = session.update({'dashboard_mode': 'customer'}) %} {% elif
+current_user.role == 'rider' %} {% set _ = session.update({'dashboard_mode':
+'customer'}) %} {% elif current_user.role == 'admin' %} {% set _ =
+session.update({'dashboard_mode': 'customer'}) %} {% endif %} {% endif %}
+
+<!-- MODE SWITCHER -->
+<div class="mb-4">
+  {% if current_user.role == 'customer' %}
+  <!-- Customer has only one dashboard -->
+  <span class="badge bg-warning text-dark p-2 fs-6">Customer Mode</span>
+  <span class="text-muted ms-2"
+    >{% if current_user.is_rider_requested and current_user.role == "customer"
+    %}Rider Mode waiting for approval {% endif %}</span
+  >
+  {% elif current_user.role == 'rider' %}
+  <!-- Rider can switch between CUSTOMER and RIDER -->
+  <a
+    href="{{ url_for('set_mode', mode='customer') }}"
+    class="btn {% if session.dashboard_mode == 'customer' %}btn-dark{% else %}btn-outline-dark{% endif %} me-2"
+  >
+    Customer Dashboard
+  </a>
+
+  <a
+    href="{{ url_for('set_mode', mode='rider') }}"
+    class="btn {% if session.dashboard_mode == 'rider' %}btn-dark{% else %}btn-outline-dark{% endif %}"
+  >
+    Rider Dashboard
+  </a>
+
+  {% elif current_user.role == 'admin' %}
+  <!-- Admin can switch between all 3 -->
+  <a
+    href="{{ url_for('set_mode', mode='customer') }}"
+    class="btn {% if session.get('dashboard_mode') == 'customer' %}btn-dark{% else %}btn-outline-dark{% endif %} me-2"
+  >
+    Customer
+  </a>
+
+  <a
+    href="{{ url_for('set_mode', mode='rider') }}"
+    class="btn {% if session.get('dashboard_mode') == 'rider' %}btn-dark{% else %}btn-outline-dark{% endif %} me-2"
+  >
+    Rider
+  </a>
+
+  <a
+    href="{{ url_for('set_mode', mode='admin') }}"
+    class="btn {% if session.get('dashboard_mode') == 'admin' %}btn-warning text-dark{% else %}btn-outline-warning{% endif %}"
+  >
+    Admin
+  </a>
+  {% endif %}
+</div>
+
+<hr />
+
+<!-- LOADING DASHBOARD SECTIONS -->
+<div class="row">
+  {% if session.dashboard_mode == 'customer' %} {% include
+  "dashboard_parts/customer.html" %} {% elif session.dashboard_mode == 'rider'
+  %} {% include "dashboard_parts/rider.html" %} {% elif session.dashboard_mode
+  == 'admin' %} {% include "dashboard_parts/admin.html" %} {% endif %}
+</div>
+
+{% endblock %}

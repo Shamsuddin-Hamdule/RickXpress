@@ -1,0 +1,113 @@
+{% extends "layout.html" %}
+{% block title %}Vehicle Management — RickXpress{% endblock %}
+
+{% block content %}
+
+<h2 class="fw-bold mb-4">Vehicle Management</h2>
+
+<!-- If admin: show total vehicles -->
+{% if current_user.role == "admin" %}
+<p class="text-muted mb-3">Total Vehicles: {{ vehicles|length }}</p>
+{% endif %}
+
+<div class="text-end mb-3">
+    <a href="{{ url_for('vehicle_add') }}" class="btn btn-warning fw-bold">
+        + Add Vehicle
+    </a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+
+        <table class="table table-striped table-hover mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Number</th>
+                    <th>Model</th>
+                    <th>Driver Location</th>
+                    <th>Color</th>
+                    <th>Status</th>
+                    {% if current_user.role == "admin" %}
+                        <th>Owner</th>
+                    {% endif %}
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for v in vehicles %}
+                <tr>
+                    <td>{{ v.id }}</td>
+
+                    <!-- Vehicle Type -->
+                    <td>
+                        {% if v.vehicle_type == 'Other' %}
+                            {{ v.other_vehicle_type }}
+                        {% else %}
+                            {{ v.vehicle_type }}
+                        {% endif %}
+                    </td>
+
+                    <td>{{ v.vehicle_number }}</td>
+                    <td>{{ v.model or "-" }}</td>
+                    <td>{{ v.driver_location or "-" }}</td>
+                    <td>{{ v.color or "-" }}</td>
+
+                    <!-- Status badge -->
+                    <td>
+                        {% if v.status == 'Active' %}
+                            <span class="badge bg-success">Active</span>
+                        {% elif v.status == 'Inactive' %}
+                            <span class="badge bg-secondary">Inactive</span>
+                        {% else %}
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        {% endif %}
+                    </td>
+
+                    <!-- Owner (admin only) -->
+                    {% if current_user.role == "admin" %}
+                    <td>
+                        {{ v.owner.name }}  
+                        <small class="text-muted">(+91 {{ v.owner.phone }})</small>
+                    </td>
+                    {% endif %}
+
+                    <!-- Actions -->
+                    <td>
+                        <a href="{{ url_for('vehicle_edit', vehicle_id=v.id) }}"
+                           class="btn btn-sm btn-dark me-1">
+                            Edit
+                        </a>
+
+                        {% if v.status == 'Active' %}
+                        <a href="{{ url_for('vehicle_set_status', vehicle_id=v.id, status='Inactive') }}"
+                           class="btn btn-sm btn-outline-secondary me-1">
+                            Deactivate
+                        </a>
+                        {% else %}
+                        <a href="{{ url_for('vehicle_set_status', vehicle_id=v.id, status='Active') }}"
+                           class="btn btn-sm btn-outline-success me-1">
+                            Activate
+                        </a>
+                        {% endif %}
+
+                        {% if current_user.role == "admin" %}
+                        <a href="{{ url_for('vehicle_delete', vehicle_id=v.id) }}"
+                           class="btn btn-sm btn-outline-danger"
+                           onclick="return confirm('Delete this vehicle?');">
+                            Delete
+                        </a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+
+{% endblock %}
